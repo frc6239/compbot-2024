@@ -75,6 +75,9 @@
         }
       },
       "/SmartDashboard/Field": {
+        "Robot": {
+          "image": "C:\\Users\\Irrational Engineers\\Documents\\electrical_board.png"
+        },
         "XModules": {
           "arrowColor": [
             0.09611687064170837,

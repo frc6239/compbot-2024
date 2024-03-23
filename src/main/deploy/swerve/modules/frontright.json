@@ -20,8 +20,8 @@
     },
     "encoder": {
       "type": "cancoder",
-      "id": 11,
-      "canbus": 11
+      "id": 12,
+      "canbus": 12
     },
     "inverted": {
       "drive": false,
