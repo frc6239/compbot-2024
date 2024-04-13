@@ -27,7 +27,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterBackRight.follow(shooterFrontRight);
   }
 
-  public void shootOnionRing() {
+  public void shoot() {
       shooterFrontLeft.set(ShooterConstants.MAX_SHOOTER_SPEED);
       shooterFrontRight.set(ShooterConstants.MAX_SHOOTER_SPEED);
   }

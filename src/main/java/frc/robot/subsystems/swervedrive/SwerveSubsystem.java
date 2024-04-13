@@ -19,7 +19,6 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
@@ -61,15 +60,12 @@ public class SwerveSubsystem extends SubsystemBase
     //  In this case the gear ratio is 12.8 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
 
-    // Changed
     double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(150 / 7.1);
-    //double angleConversionFactor = 360 / ((150 / 7.1) * 4096);
     // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO * ENCODER RESOLUTION).
     //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
     //  The gear ratio is 6.75 motor revolutions per wheel rotation.
     //  The encoder resolution per motor revolution is 1 per motor revolution.
     double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4.0), 6.75);
-    //double driveConversionFactor = (Math.PI * Units.inchesToMeters(4.0)) / (6.75 * 4096);
     System.out.println("\"conversionFactor\": {");
     System.out.println("\t\"angle\": " + angleConversionFactor + ",");
     System.out.println("\t\"drive\": " + driveConversionFactor);
@@ -210,7 +206,7 @@ public class SwerveSubsystem extends SubsystemBase
                                                                       headingX.getAsDouble(),
                                                                       headingY.getAsDouble(),
                                                                       swerveDrive.getOdometryHeading().getRadians(),
-                                                                      maximumSpeed));
+                                                                      swerveDrive.getMaximumVelocity()));
     });
   }
 
@@ -413,12 +409,6 @@ public class SwerveSubsystem extends SubsystemBase
   public Rotation2d getHeading()
   {
     return getPose().getRotation();
-  }
-
-  public void smartDashboardVeloctity() {
-      SmartDashboard.putNumber("Velocity X", getRobotVelocity().vxMetersPerSecond);
-      SmartDashboard.putNumber("Velocity Y", getRobotVelocity().vyMetersPerSecond);
-      SmartDashboard.putNumber("Pitch", getPitch().getDegrees());
   }
 
   /**
