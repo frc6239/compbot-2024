@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,8 +22,8 @@ import swervelib.parser.SwerveParser;
 public class Robot extends TimedRobot
 {
 
-  private static Robot   instance;
-  private        Command m_autonomousCommand;
+  private static Robot instance;
+  private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
