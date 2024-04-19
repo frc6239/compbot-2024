@@ -8,12 +8,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,11 +35,6 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
 
-  private final SendableChooser<String> allianceChooser = new SendableChooser<>();
-
-  private Command driveFieldOrientedAnglularVelocity;
-  private Command driveFieldOrientedAnglularVelocityFlipped;
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -51,7 +42,6 @@ public class RobotContainer
   {
     // Configure the trigger bindings
     configureBindings();
-    configureDriverDashboard();
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> -MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -81,23 +71,18 @@ public class RobotContainer
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the angular velocity of the robot
-    driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getLeftY() * 0.75, OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driverXbox.getLeftX() * 0.75, OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRightX() * 0.75);
-
-    // Flips forward and backwards
-    driveFieldOrientedAnglularVelocityFlipped = drivebase.driveCommand(
-        () -> MathUtil.applyDeadband(-driverXbox.getLeftY() * 0.75, OperatorConstants.LEFT_Y_DEADBAND),
-        () -> MathUtil.applyDeadband(-driverXbox.getLeftX() * 0.75, OperatorConstants.LEFT_X_DEADBAND),
-        () -> -driverXbox.getRightX() * 0.75);
 
     Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
         () -> MathUtil.applyDeadband(driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> driverXbox.getRawAxis(2));
 
-    //drivebase.setDefaultCommand(!RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
+    drivebase.setDefaultCommand(
+        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   /**
@@ -120,12 +105,6 @@ public class RobotContainer
     driverXbox.rightTrigger().whileTrue(Commands.runOnce(shooter::shoot));
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
   }
-
-  private void configureDriverDashboard() {;
-    allianceChooser.addOption("Red Alliance", "red");
-    allianceChooser.addOption("Blue Alliance", "blue");
-    SmartDashboard.putData(allianceChooser);
-  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -139,11 +118,7 @@ public class RobotContainer
 
   public void setDriveMode()
   {
-    if (allianceChooser.getSelected() == "blue") {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocityFlipped);
-    } else {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
+    //drivebase.setDefaultCommand();
   }
 
   public void setMotorBrake(boolean brake)
