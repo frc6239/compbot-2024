@@ -40,7 +40,7 @@ public final class Constants
   }
 
   public static final class ShooterConstants {
-    public static final double MAX_SHOOTER_SPEED = 0.5;
+    public static final double MAX_SHOOTER_SPEED = 0.1;
   }
 
   public static class OperatorConstants
