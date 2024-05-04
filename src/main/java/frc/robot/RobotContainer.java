@@ -103,7 +103,10 @@ public class RobotContainer
         Commands.deferredProxy(() -> drivebase.driveToPose(
                                    new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               ));
-    driverXbox.rightTrigger().whileTrue(new RunCommand(shooter::shoot, shooter));
+
+    driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
+    driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
+    driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
   }
   /**

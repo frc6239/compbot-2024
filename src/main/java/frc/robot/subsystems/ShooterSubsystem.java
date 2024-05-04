@@ -11,25 +11,35 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  private final CANSparkMax shooterLeftFront;
-  private final CANSparkMax shooterRightFront;
-  private final CANSparkMax shooterRightBack;
-  private final CANSparkMax shooterLeftBack;
+  private final CANSparkMax leftFrontMotor;
+  private final CANSparkMax rightFrontMotor;
+  private final CANSparkMax rightBackMotor;
+  private final CANSparkMax leftBackMotor;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    shooterLeftBack = new CANSparkMax(9, MotorType.kBrushless);
-    shooterLeftFront = new CANSparkMax(10, MotorType.kBrushless);
-    shooterRightBack = new CANSparkMax(11, MotorType.kBrushless);
-    shooterRightFront = new CANSparkMax(12, MotorType.kBrushless);
+    leftBackMotor = new CANSparkMax(9, MotorType.kBrushless);
+    leftFrontMotor = new CANSparkMax(10, MotorType.kBrushless);
+    rightBackMotor = new CANSparkMax(11, MotorType.kBrushless);
+    rightFrontMotor = new CANSparkMax(12, MotorType.kBrushless);
 
-    shooterLeftBack.follow(shooterLeftFront);
-    shooterRightBack.follow(shooterRightFront);
+    leftBackMotor.follow(leftFrontMotor);
+    rightBackMotor.follow(rightFrontMotor);
   }
 
-  public void shoot() {
-    shooterLeftFront.set(ShooterConstants.MAX_SHOOTER_SPEED);
-    shooterRightFront.set(ShooterConstants.MAX_SHOOTER_SPEED);
+  public void run() {
+    leftFrontMotor.set(ShooterConstants.MAX_SHOOTER_SPEED);
+    rightFrontMotor.set(ShooterConstants.MAX_SHOOTER_SPEED);
+  }
+
+  public void stop() {
+    leftFrontMotor.set(0);
+    rightFrontMotor.set(0);
+  }
+
+  public void invert() {
+    leftFrontMotor.setInverted(!leftFrontMotor.getInverted());
+    rightFrontMotor.setInverted(!rightFrontMotor.getInverted());
   }
 
   @Override
