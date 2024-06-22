@@ -13,12 +13,11 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.shooter.ShootNoteCommand;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -36,6 +35,7 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooter = new ShooterSubsystem();
+  private final IntakeSubsystem intake = new IntakeSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -102,6 +102,7 @@ public class RobotContainer
   {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
+    // Drivetrain
     driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
     driverXbox.b().whileTrue(
@@ -109,14 +110,32 @@ public class RobotContainer
                                    new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               ));
 
+    // Shooter
     driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
     driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
     driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
+
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+    // Intake
+    driverXbox.povUp().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
+    driverXbox.povDown().onTrue(Commands.run(() -> {
+      if (intake.getIsRunning()) {
+        intake.stop();
+        intake.invert();
+        intake.run();
+      } else {
+        intake.invert();
+      }
+    }));
   }
 
   private void configurePathPlannerCommands() {
-    NamedCommands.registerCommand("shootNote", new ShootNoteCommand(shooter));
+    NamedCommands.registerCommand("runShooter", Commands.runOnce(shooter::run));
+    NamedCommands.registerCommand("stopShooter", Commands.runOnce(shooter::stop));
+    NamedCommands.registerCommand("stopRobot", Commands.runOnce(() -> {
+      drivebase.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+    }));
   }
 
   /**
@@ -138,5 +157,9 @@ public class RobotContainer
   public void setMotorBrake(boolean brake)
   {
     drivebase.setMotorBrake(brake);
+  }
+
+  public IntakeSubsystem getIntake() {
+    return intake;
   }
 }

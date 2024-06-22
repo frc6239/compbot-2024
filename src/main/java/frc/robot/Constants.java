@@ -45,6 +45,7 @@ public final class Constants
 
   public static final class IntakeConstants {
     public static final double MAX_INTAKE_SPEED = 0.5;
+    public static final double MAX_INDEXER_SPEED = 0.5;
   }
 
   public static final class IndexerConstants {
