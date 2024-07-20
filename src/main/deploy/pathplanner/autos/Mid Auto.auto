@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.92,
+      "y": 5.556066607628711
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "runShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Path part 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Path part 2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

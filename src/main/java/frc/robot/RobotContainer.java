@@ -19,7 +19,9 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
+
 import java.io.File;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -36,6 +38,7 @@ public class RobotContainer
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
+  private final VisionSubsystem vision = new VisionSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
