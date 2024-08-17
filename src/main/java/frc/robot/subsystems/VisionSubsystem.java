@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.List;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -15,40 +13,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class VisionSubsystem extends SubsystemBase {
   private final PhotonCamera camera;
   private PhotonPipelineResult result;
-  private boolean hasTargets;
-  List<PhotonTrackedTarget> targets;
+  private PhotonTrackedTarget target;
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {
-    camera = new PhotonCamera("Microsoft_LifeCam_HD-3000");
+    camera = new PhotonCamera("protonvision");
   }
 
-  void getTargetInformation(int index) {
-    int targetID = targets.get(index).getFiducialId();
-    double yaw = targets.get(index).getYaw();
-    double pitch = targets.get(index).getPitch();
-    double area = targets.get(index).getArea();
-    double skew = targets.get(index).getSkew();
-
-    System.out.println("[" + targetID + "] Yaw: " + yaw);
-    System.out.println("[" + targetID + "] Pitch: " + pitch);
-    System.out.println("[" + targetID + "] Area: " + area);
-    System.out.println("[" + targetID + "] Skew: " + skew);
-    System.out.println();
+  public PhotonCamera getCamera() {
+    return camera;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    result = camera.getLatestResult();
-    hasTargets = result.hasTargets();
-
-    if (hasTargets) {
-      targets = result.getTargets();
-
-      for (int i = 0; i < targets.size(); i++) {
-        getTargetInformation(i);
-      }
-    }
   }
 }
