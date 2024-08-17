@@ -5,6 +5,7 @@
 package frc.robot.commands.swervedrive.auto;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -22,7 +23,7 @@ public class AutoDriveToTargetCommand extends Command {
   private PhotonPipelineResult result;
 
     // Constants such as camera and target height stored. Change per robot and goal!
-  final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(24);
+  final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(15);
   final double TARGET_HEIGHT_METERS = Units.inchesToMeters(51.875);
   // Angle between horizontal and the camera.
   final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
@@ -38,6 +39,9 @@ public class AutoDriveToTargetCommand extends Command {
     final double ANGULAR_P = 0.1;
     final double ANGULAR_D = 0.0;
     PIDController turnController = new PIDController(ANGULAR_P, 0, ANGULAR_D);
+    private double range;
+    private double oldrange;
+    
   
   /** Creates a new AutoDriveToTargetCommand. */
   public AutoDriveToTargetCommand(VisionSubsystem vision, SwerveSubsystem swerve) {
@@ -50,7 +54,10 @@ public class AutoDriveToTargetCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    
+  
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -58,8 +65,20 @@ public class AutoDriveToTargetCommand extends Command {
     double forwardSpeed;
 
     result = camera.getLatestResult();
-
+    
     if (result.hasTargets()) {
+      range =
+                        PhotonUtils.calculateDistanceToTargetMeters(
+                                CAMERA_HEIGHT_METERS,
+                                TARGET_HEIGHT_METERS,
+                                CAMERA_PITCH_RADIANS,
+                                Units.degreesToRadians(result.getBestTarget().getPitch()));
+
+
+        if(range != oldrange){
+          System.out.println("range=" + range);
+          oldrange = range;
+        }
       
     }
     
@@ -73,6 +92,11 @@ public class AutoDriveToTargetCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if(range < 1){
+      System.out.println("at target");
+      return true;
+    } else {
+      return false;
+    }
   }
 }

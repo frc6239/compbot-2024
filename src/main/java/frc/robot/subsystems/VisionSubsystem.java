@@ -17,7 +17,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   /** Creates a new VisionSubsystem. */
   public VisionSubsystem() {
-    camera = new PhotonCamera("protonvision");
+    camera = new PhotonCamera("photonvision");
   }
 
   public PhotonCamera getCamera() {
