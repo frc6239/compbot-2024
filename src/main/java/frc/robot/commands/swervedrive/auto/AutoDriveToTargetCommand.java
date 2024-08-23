@@ -26,7 +26,7 @@ public class AutoDriveToTargetCommand extends Command {
   final double CAMERA_HEIGHT_METERS = Units.inchesToMeters(15);
   final double TARGET_HEIGHT_METERS = Units.inchesToMeters(51.875);
   // Angle between horizontal and the camera.
-  final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(0);
+  final double CAMERA_PITCH_RADIANS = Units.degreesToRadians(44.1);
 
   // How far from the target we want to be
   final double GOAL_RANGE_METERS = Units.inchesToMeters(52.25);
