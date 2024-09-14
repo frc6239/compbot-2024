@@ -119,7 +119,10 @@ public class RobotContainer
     // Shooter
     driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
     driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
-    driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
+    //driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
+    driverXbox.y().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
+
+    driverXbox.a().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
 
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
@@ -169,5 +172,9 @@ public class RobotContainer
 
   public IntakeSubsystem getIntake() {
     return intake;
+  }
+
+  public ShooterSubsystem getShooter() {
+    return shooter;
   }
 }

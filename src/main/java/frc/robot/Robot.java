@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class Robot extends TimedRobot
   private RobotContainer m_robotContainer;
 
   private IntakeSubsystem m_intake;
-
+  private ShooterSubsystem m_shooter;
   private Timer disabledTimer;
 
   public Robot()
@@ -52,6 +53,7 @@ public class Robot extends TimedRobot
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     m_intake = m_robotContainer.getIntake();
+    m_shooter = m_robotContainer.getShooter();
 
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
@@ -95,6 +97,8 @@ public class Robot extends TimedRobot
       m_robotContainer.setMotorBrake(false);
       disabledTimer.stop();
     }
+
+    m_shooter.disable();
   }
 
   /**
@@ -105,7 +109,7 @@ public class Robot extends TimedRobot
   {
     m_robotContainer.setMotorBrake(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
@@ -135,6 +139,8 @@ public class Robot extends TimedRobot
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
     m_intake.run();
+    m_shooter.enable();
+    
   }
 
   /**

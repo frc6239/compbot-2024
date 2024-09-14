@@ -15,6 +15,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANSparkMax rightFrontMotor;
   private final CANSparkMax rightBackMotor;
   private final CANSparkMax leftBackMotor;
+  private boolean running;
+  private double speed;
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
@@ -25,11 +27,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     leftBackMotor.follow(leftFrontMotor);
     rightBackMotor.follow(rightFrontMotor);
+    speed = ShooterConstants.MAX_SHOOTER_SPEED;
+    running=false;
   }
 
   public void run() {
-    leftFrontMotor.set(ShooterConstants.MAX_SHOOTER_SPEED);
-    rightFrontMotor.set(ShooterConstants.MAX_SHOOTER_SPEED);
+    leftFrontMotor.set(speed);
+    rightFrontMotor.set(speed);
   }
 
   public void stop() {
@@ -45,5 +49,33 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (running ) {
+      run();
+    } else { 
+      stop();
+    }
   }
+
+  public void enable () {
+    running = true;
+  }
+
+  public void disable () {
+    running = false;
+  }
+
+  public void increaseSpeed() {
+    if (speed <= 0.9) {
+      speed=speed+0.1;
+
+    }
+  }
+
+  public void decreaseSpeed() {
+    if (speed >= 0.1 ) {
+      speed = speed - 0.1;
+    }
+    
+  }
+
 }
