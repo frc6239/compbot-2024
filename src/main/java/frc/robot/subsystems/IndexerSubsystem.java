@@ -18,6 +18,7 @@ public class IndexerSubsystem extends SubsystemBase {
   public IndexerSubsystem() {
       indexerMotor = new CANSparkMax(22, MotorType.kBrushless);
       enabled = false;
+      indexerMotor.setInverted(false);
   }
   public void run() {
     enabled = true;

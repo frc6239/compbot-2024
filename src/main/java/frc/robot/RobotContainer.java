@@ -19,6 +19,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.auto.AutoAimAtTargetCommand;
 import frc.robot.commands.swervedrive.auto.AutoDriveToTargetCommand;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -27,6 +28,7 @@ import frc.robot.subsystems.VisionSubsystem;
 import java.io.File;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.revrobotics.CANSparkMax;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -41,6 +43,7 @@ public class RobotContainer
   private final ShooterSubsystem shooter = new ShooterSubsystem();
   private final IntakeSubsystem intake = new IntakeSubsystem();
   private final VisionSubsystem vision = new VisionSubsystem();
+  private final IndexerSubsystem Indexer = new IndexerSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
@@ -123,6 +126,8 @@ public class RobotContainer
     driverXbox.y().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
 
     driverXbox.a().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
+      driverXbox.leftBumper().onTrue(Commands.runOnce(Indexer::run, Indexer));
+    driverXbox.leftBumper().onFalse(Commands.runOnce(Indexer::stop, Indexer));
 
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 

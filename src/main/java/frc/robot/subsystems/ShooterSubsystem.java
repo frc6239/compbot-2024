@@ -65,14 +65,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void increaseSpeed() {
-    if (speed <= 0.9) {
+    if (speed < 0.9) {
       speed=speed+0.1;
 
     }
   }
 
   public void decreaseSpeed() {
-    if (speed >= 0.1 ) {
+    if (speed > 0.1 ) {
       speed = speed - 0.1;
     }
     
