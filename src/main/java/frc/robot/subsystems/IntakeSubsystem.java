@@ -13,20 +13,22 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSubsystem extends SubsystemBase {
   private final CANSparkMax intakeMotor;
   private boolean isRunning;
+  private double speed;
 
   /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
     intakeMotor = new CANSparkMax(21, MotorType.kBrushless);
-  
+    isRunning = false;
+  speed = 0;
   }
 
   public void run() {
-    intakeMotor.set(IntakeConstants.MAX_INTAKE_SPEED);
+    speed = (IntakeConstants.MAX_INTAKE_SPEED);
     isRunning = true;
   }
 
   public void stop() {
-    intakeMotor.set(0);
+    speed = (0);
     isRunning = false;
   }
 
@@ -40,7 +42,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    run();
+    intakeMotor.set(speed);
     // This method will be called once per scheduler run
   }
 }

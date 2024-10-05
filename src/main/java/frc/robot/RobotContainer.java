@@ -113,11 +113,11 @@ public class RobotContainer
     // Drivetrain
     //driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-    driverXbox.x().onTrue(new AutoDriveToTargetCommand(vision, drivebase));
-    driverXbox.b().whileTrue(
-        Commands.deferredProxy(() -> drivebase.driveToPose(
-                                   new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              ));
+    //driverXbox.x().onTrue(new AutoDriveToTargetCommand(vision, drivebase));
+   // driverXbox.b().whileTrue(
+      //  Commands.deferredProxy(() -> drivebase.driveToPose(
+          //                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+                //              ));
 
     // Shooter
     driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
@@ -128,20 +128,13 @@ public class RobotContainer
     driverXbox.a().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
       driverXbox.leftBumper().onTrue(Commands.runOnce(Indexer::run, Indexer));
     driverXbox.leftBumper().onFalse(Commands.runOnce(Indexer::stop, Indexer));
-
+    //driverXbox.b().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
+    driverXbox.b().onTrue(Commands.runOnce(intake::run, intake));
+    driverXbox.b().onFalse(Commands.runOnce(intake::stop, intake));
+    
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
     // Intake
-    driverXbox.povUp().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
-    driverXbox.povDown().onTrue(Commands.run(() -> {
-      if (intake.getIsRunning()) {
-        intake.stop();
-        intake.invert();
-        intake.run();
-      } else {
-        intake.invert();
-      }
-    }));
 
     // Vision
   }
