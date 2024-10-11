@@ -28,7 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    speed = (0);
+    speed = 0.0;
     isRunning = false;
   }
 
