@@ -12,6 +12,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.sendable.SendableRegistry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
 import java.io.File;
 import java.io.IOException;
 import swervelib.parser.SwerveParser;
@@ -32,6 +39,7 @@ public class Robot extends TimedRobot
   private IntakeSubsystem m_intake;
   private ShooterSubsystem m_shooter;
   private Timer disabledTimer;
+  private GenericEntry m_shooter_max_speed;
 
   public Robot()
   {
@@ -58,7 +66,15 @@ public class Robot extends TimedRobot
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    m_shooter_max_speed =
+        Shuffleboard.getTab("Configuration")
+            .add("Shooter Max Speed", Constants.ShooterConstants.MAX_SHOOTER_SPEED)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();
   }
+  
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics that you want ran
@@ -115,6 +131,7 @@ public class Robot extends TimedRobot
     {
       m_autonomousCommand.schedule();
     }
+    m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
   }
 
   /**
@@ -148,6 +165,8 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
+   // m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
+   m_shooter_max_speed.setDouble(m_shooter.getspeed());
   }
 
   @Override

@@ -64,6 +64,14 @@ public class ShooterSubsystem extends SubsystemBase {
     running = false;
   }
 
+  public void setspeed(double speed){
+    this.speed=speed;
+  }
+
+  public double getspeed(){
+    return speed;
+  }
+
   public void increaseSpeed() {
     if (speed < 0.9) {
       speed=speed+0.1;

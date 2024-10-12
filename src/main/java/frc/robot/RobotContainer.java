@@ -155,7 +155,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("Test Auto");
+    return drivebase.getAutonomousCommand("Mid Auto");
   }
 
   public void setDriveMode()
