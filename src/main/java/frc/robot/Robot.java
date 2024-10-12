@@ -18,6 +18,9 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +43,11 @@ public class Robot extends TimedRobot
   private ShooterSubsystem m_shooter;
   private Timer disabledTimer;
   private GenericEntry m_shooter_max_speed;
+  
+   private static final String kDefaultAuto = "Mid Auto";
+  private static final String kCustomAuto = "Left Auth";
+  private String m_autopathselected;
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   public Robot()
   {
@@ -73,6 +81,13 @@ public class Robot extends TimedRobot
             .withPosition(1, 1)
             .withSize(2, 1)
             .getEntry();
+
+    
+    m_chooser.setDefaultOption("Mid Auto", kDefaultAuto);
+    m_chooser.addOption("Left Auto", kCustomAuto);
+    SmartDashboard.putData("Auto Choices", m_chooser);
+
+
   }
   
 
@@ -124,7 +139,10 @@ public class Robot extends TimedRobot
   public void autonomousInit()
   {
     m_robotContainer.setMotorBrake(true);
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+   // m_autonomousCommand = m_chooser.getSelected();
+
+   m_autopathselected =m_chooser.getSelected();
+   m_autonomousCommand = m_robotContainer.getAutonomousCommand(m_autopathselected);
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
@@ -132,6 +150,8 @@ public class Robot extends TimedRobot
       m_autonomousCommand.schedule();
     }
     m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
+
+    System.out.println("Auto selected: " + m_autopathselected);
   }
 
   /**
