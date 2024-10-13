@@ -139,17 +139,18 @@ public class RobotContainer
 
     
     
-    // Put the Authoomous chooser on SmartDashboard
-    ShuffleboardTab tab= Shuffleboard.getTab("Configuration");
-
+    
     // Put the Autonomous chooser on the Shuffleboard
-    m_auto_selection =
-      tab.add("Auto Path Command", m_chooser)
-      .withSize(1, 1)
-      .withPosition(2, 0)
+    //ShuffleboardTab tab= Shuffleboard.getTab("Configuration");
+
+    m_auto_selection = Shuffleboard.getTab("Configuration")
+      .add("Auto Path Command", m_chooser)
+      .withSize(2, 1)
+      .withPosition(0, 0)
       .withWidget(BuiltInWidgets.kComboBoxChooser);
 
   }
+
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
    * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
@@ -165,28 +166,31 @@ public class RobotContainer
     //driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
     //driverXbox.x().onTrue(new AutoDriveToTargetCommand(vision, drivebase));
-   // driverXbox.b().whileTrue(
-      //  Commands.deferredProxy(() -> drivebase.driveToPose(
-          //                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                //              ));
+    // driverXbox.b().whileTrue(
+    //  Commands.deferredProxy(() -> drivebase.driveToPose(
+    //                         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+    //              ));
 
-    // Shooter
+    // Shooter button bindings
     driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
     driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
     //driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
     driverXbox.y().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
-
     driverXbox.a().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
-      driverXbox.leftBumper().onTrue(Commands.runOnce(Indexer::run, Indexer));
-    driverXbox.leftBumper().onFalse(Commands.runOnce(Indexer::stop, Indexer));
-    //driverXbox.b().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
-    driverXbox.b().onTrue(Commands.runOnce(intake::run, intake));
-    driverXbox.b().onFalse(Commands.runOnce(intake::stop, intake));
+
     
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
     // Intake
+    //driverXbox.b().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
+    driverXbox.b().onTrue(Commands.runOnce(intake::run, intake));
+    driverXbox.b().onFalse(Commands.runOnce(intake::stop, intake));
 
+
+    // Indexer button bindings
+    driverXbox.leftBumper().onTrue(Commands.runOnce(Indexer::run, Indexer));
+    driverXbox.leftBumper().onFalse(Commands.runOnce(Indexer::stop, Indexer));
+    
     // Vision
   }
 
