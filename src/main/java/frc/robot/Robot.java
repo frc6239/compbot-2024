@@ -13,8 +13,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.StringArrayEntry;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -24,6 +28,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import swervelib.parser.SwerveParser;
 
 /**
@@ -43,9 +48,8 @@ public class Robot extends TimedRobot
   private ShooterSubsystem m_shooter;
   private Timer disabledTimer;
   private GenericEntry m_shooter_max_speed;
+  private ComplexWidget m_auto_selection;
   
-   private static final String kDefaultAuto = "Mid Auto";
-  private static final String kCustomAuto = "Left Auth";
   private String m_autopathselected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -74,21 +78,38 @@ public class Robot extends TimedRobot
     // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
+    
+    
+    // Add Pathplaner options for autonomous
+    // These are configuraed in Constatns.java
+    m_chooser.setDefaultOption(Constants.AutonConstants.kDefaultAuto, Constants.AutonConstants.kDefaultAuto);
+    m_chooser.addOption(Constants.AutonConstants.kCustomAuto1, Constants.AutonConstants.kCustomAuto1);
+    m_chooser.addOption(Constants.AutonConstants.kCustomAuto2, Constants.AutonConstants.kCustomAuto2);
+
+    // Put the Autonomous chooser on SmartDashboard 
+    SmartDashboard.putData("Auto Command", m_chooser);
+
     m_shooter_max_speed =
         Shuffleboard.getTab("Configuration")
             .add("Shooter Max Speed", Constants.ShooterConstants.MAX_SHOOTER_SPEED)
             .withWidget("Number Slider")
             .withPosition(1, 1)
             .withSize(2, 1)
+            .withProperties(Map.of("min", 0, "max", 1))
             .getEntry();
 
     
-    m_chooser.setDefaultOption("Mid Auto", kDefaultAuto);
-    m_chooser.addOption("Left Auto", kCustomAuto);
-    SmartDashboard.putData("Auto Choices", m_chooser);
+    
+    ShuffleboardTab tab= Shuffleboard.getTab("Configuration");
 
+    // Put the Autonomous chooser on the Shuffleboard
+    m_auto_selection =
+      tab.add("Auto Path Command", m_chooser)
+      .withSize(1, 1)
+      .withPosition(2, 0)
+      .withWidget(BuiltInWidgets.kComboBoxChooser);
 
-  }
+ }
   
 
   /**
@@ -150,7 +171,6 @@ public class Robot extends TimedRobot
       m_autonomousCommand.schedule();
     }
     m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
-
     System.out.println("Auto selected: " + m_autopathselected);
   }
 
@@ -160,6 +180,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousPeriodic()
   {
+    
   }
 
   @Override
