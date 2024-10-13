@@ -115,6 +115,14 @@
     "Persistent Values": {
       "open": false
     },
+    "retained": {
+      "Shuffleboard": {
+        "Configuration": {
+          "open": true
+        },
+        "open": true
+      }
+    },
     "transitory": {
       "SmartDashboard": {
         "Field": {
@@ -132,7 +140,7 @@
       "open": true
     },
     "Server": {
-      "Subscribers": {
+      "Publishers": {
         "open": true
       },
       "open": true

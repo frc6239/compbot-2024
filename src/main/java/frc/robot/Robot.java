@@ -47,12 +47,7 @@ public class Robot extends TimedRobot
   private IntakeSubsystem m_intake;
   private ShooterSubsystem m_shooter;
   private Timer disabledTimer;
-  private GenericEntry m_shooter_max_speed;
-  private ComplexWidget m_auto_selection;
   
-  private String m_autopathselected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
   public Robot()
   {
     instance = this;
@@ -79,36 +74,8 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
     
-    
-    // Add Pathplaner options for autonomous
-    // These are configuraed in Constatns.java
-    m_chooser.setDefaultOption(Constants.AutonConstants.kDefaultAuto, Constants.AutonConstants.kDefaultAuto);
-    m_chooser.addOption(Constants.AutonConstants.kCustomAuto1, Constants.AutonConstants.kCustomAuto1);
-    m_chooser.addOption(Constants.AutonConstants.kCustomAuto2, Constants.AutonConstants.kCustomAuto2);
-
-    // Put the Autonomous chooser on SmartDashboard 
-    SmartDashboard.putData("Auto Command", m_chooser);
-
-    m_shooter_max_speed =
-        Shuffleboard.getTab("Configuration")
-            .add("Shooter Max Speed", Constants.ShooterConstants.MAX_SHOOTER_SPEED)
-            .withWidget("Number Slider")
-            .withPosition(1, 1)
-            .withSize(2, 1)
-            .withProperties(Map.of("min", 0, "max", 1))
-            .getEntry();
-
-    
-    
-    ShuffleboardTab tab= Shuffleboard.getTab("Configuration");
-
-    // Put the Autonomous chooser on the Shuffleboard
-    m_auto_selection =
-      tab.add("Auto Path Command", m_chooser)
-      .withSize(1, 1)
-      .withPosition(2, 0)
-      .withWidget(BuiltInWidgets.kComboBoxChooser);
-
+   
+  
  }
   
 
@@ -160,19 +127,19 @@ public class Robot extends TimedRobot
   public void autonomousInit()
   {
     m_robotContainer.setMotorBrake(true);
-   // m_autonomousCommand = m_chooser.getSelected();
+    // m_autonomousCommand = m_chooser.getSelected();
 
-   m_autopathselected =m_chooser.getSelected();
-   m_autonomousCommand = m_robotContainer.getAutonomousCommand(m_autopathselected);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.setShooterSpeedFromDashboard();
+
     
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.schedule();
     }
-    m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
-    System.out.println("Auto selected: " + m_autopathselected);
-  }
+    
+    }
 
   /**
    * This function is called periodically during autonomous.
@@ -206,8 +173,8 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
-   // m_shooter.setspeed(m_shooter_max_speed.getDouble(Constants.ShooterConstants.MAX_SHOOTER_SPEED));
-   m_shooter_max_speed.setDouble(m_shooter.getspeed());
+    // Call method to set shooter speed based upon input on dashboard
+    m_robotContainer.setShooterSpeedFromDashboard();
   }
 
   @Override
