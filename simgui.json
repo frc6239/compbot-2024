@@ -77,12 +77,18 @@
       "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
       "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/commands": "String Chooser",
       "/SmartDashboard/navX-Sensor[1]": "Gyro",
       "/SmartDashboard/navX-Sensor[2]": "Gyro",
       "/SmartDashboard/navX-Sensor[4]": "Gyro"
     },
     "windows": {
       "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Configuration/Auto Path Command": {
         "window": {
           "visible": true
         }
@@ -118,6 +124,9 @@
     "retained": {
       "Shuffleboard": {
         "Configuration": {
+          "Auto Path Command": {
+            "open": true
+          },
           "open": true
         },
         "open": true
@@ -140,9 +149,6 @@
       "open": true
     },
     "Server": {
-      "Publishers": {
-        "open": true
-      },
       "open": true
     },
     "visible": true

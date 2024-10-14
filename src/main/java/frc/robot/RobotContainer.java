@@ -33,8 +33,10 @@ import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.revrobotics.CANSparkMax;
 
@@ -57,11 +59,15 @@ public class RobotContainer
   final CommandXboxController driverXbox = new CommandXboxController(0);
 
   private GenericEntry m_shooter_max_speed;
-  private ComplexWidget m_auto_selection;
+  
+  // SmartDashboard Widget
+  private ComplexWidget m_autoSelectionComplexWidget;
   
   private String m_autopathselected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  // Holds names of paths for autonomous
+  private List<String> pathNames;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -118,15 +124,26 @@ public class RobotContainer
   }
 
   private void setupDashboards() {
-    // Add Pathplaner options for autonomous
-    // These are configuraed in Constatns.java
-    m_chooser.setDefaultOption(Constants.AutonConstants.kDefaultAuto, Constants.AutonConstants.kDefaultAuto);
-    m_chooser.addOption(Constants.AutonConstants.kCustomAuto1, Constants.AutonConstants.kCustomAuto1);
-    m_chooser.addOption(Constants.AutonConstants.kCustomAuto2, Constants.AutonConstants.kCustomAuto2);
+    // Get names of all of the paths
+    pathNames = AutoBuilder.getAllAutoNames();
 
+    // Iterate list of pathnames and add them as choices on Shuffleboard
+    for (int i=0; i< pathNames.size(); i++) {
+      m_chooser.addOption(pathNames.get(i),pathNames.get(i));
+      //m_chooser_smartdashboard.addOption(pathNames.get(i), pathNames.get(i));
+    }
+
+    // Set default option to be the first element
+    // FIXME:  Matt to create Default path and hard code Default string below
+    m_chooser.setDefaultOption(pathNames.get(0), pathNames.get(0));
+    //m_chooser_smartdashboard.setDefaultOption(pathNames.get(0), pathNames.get(0));
+
+    
     // Put the Autonomous chooser on SmartDashboard 
     SmartDashboard.putData("Auto Command", m_chooser);
+    
 
+    // Construct Shuffleboard
     // Put a widget to allow driver to select speed of shooter
     m_shooter_max_speed =
         Shuffleboard.getTab("Configuration")
@@ -141,14 +158,13 @@ public class RobotContainer
     
     
     // Put the Autonomous chooser on the Shuffleboard
-    //ShuffleboardTab tab= Shuffleboard.getTab("Configuration");
-
-    m_auto_selection = Shuffleboard.getTab("Configuration")
+    m_autoSelectionComplexWidget = Shuffleboard.getTab("Configuration")
       .add("Auto Path Command", m_chooser)
       .withSize(2, 1)
       .withPosition(0, 0)
       .withWidget(BuiltInWidgets.kComboBoxChooser);
 
+  
   }
 
   /**
@@ -218,7 +234,7 @@ public class RobotContainer
     // Get the user autonomous path selection from the dashboard
     m_autopathselected =m_chooser.getSelected();
    
-    System.out.println("Auto selected: " + m_autopathselected);
+    System.out.println("Auto Path selected: " + m_autopathselected);
 
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand(m_autopathselected);
