@@ -68,6 +68,10 @@ public class RobotContainer
 
   // Holds names of paths for autonomous
   private List<String> pathNames;
+  private AbsoluteDriveAdv closedAbsoluteDriveAdv;
+  private Command driveFieldOrientedDirectAngle;
+  private Command driveFieldOrientedAnglularVelocity;
+  private Command driveFieldOrientedDirectAngleSim;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -81,7 +85,7 @@ public class RobotContainer
     // Setup Dashboards
     setupDashboards();
 
-    AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
+    closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> -MathUtil.applyDeadband(-driverXbox.getLeftY(),
                                                                                                 OperatorConstants.LEFT_Y_DEADBAND),
                                                                    () -> -MathUtil.applyDeadband(-driverXbox.getLeftX(),
@@ -98,7 +102,7 @@ public class RobotContainer
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the desired angle NOT angular rotation
-    Command driveFieldOrientedDirectAngle = drivebase.driveCommand(
+    driveFieldOrientedDirectAngle = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(-driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRightX(),
@@ -109,18 +113,16 @@ public class RobotContainer
     // controls are front-left positive
     // left stick controls translation
     // right stick controls the angular velocity of the robot
-    Command driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
+    driveFieldOrientedAnglularVelocity = drivebase.driveCommand(
         () -> MathUtil.applyDeadband(-driverXbox.getLeftY() * 0.75, OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(-driverXbox.getLeftX() * 0.75, OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRightX() * 0.75);
 
-    Command driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
+    driveFieldOrientedDirectAngleSim = drivebase.simDriveCommand(
         () -> MathUtil.applyDeadband(-driverXbox.getLeftY(), OperatorConstants.LEFT_Y_DEADBAND),
         () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRawAxis(2));
 
-    drivebase.setDefaultCommand(
-        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   private void setupDashboards() {
@@ -135,7 +137,7 @@ public class RobotContainer
 
     // Set default option to be the first element
     // FIXME:  Matt to create Default path and hard code Default string below
-    m_chooser.setDefaultOption(pathNames.get(0), pathNames.get(0));
+    m_chooser.setDefaultOption("Default Auto","Default Auto");
     //m_chooser_smartdashboard.setDefaultOption(pathNames.get(0), pathNames.get(0));
 
     
@@ -242,7 +244,9 @@ public class RobotContainer
 
   public void setDriveMode()
   {
-    //drivebase.setDefaultCommand();
+    
+    drivebase.setDefaultCommand(
+        !RobotBase.isSimulation() ? driveFieldOrientedAnglularVelocity : driveFieldOrientedDirectAngleSim);
   }
 
   public void setMotorBrake(boolean brake)
