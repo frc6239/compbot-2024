@@ -74,8 +74,8 @@ public class Robot extends TimedRobot
     // immediately when disabled, but then also let it be pushed more 
     disabledTimer = new Timer();
          
-    CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
+    CameraServer.startAutomaticCapture("front_camera",0);
+    CameraServer.startAutomaticCapture("back_camera",1);
     
    
   
