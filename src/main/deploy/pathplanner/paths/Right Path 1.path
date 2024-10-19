@@ -3,85 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9036644249060484,
-        "y": 3.002925530791679
+        "x": 0.8875906640702174,
+        "y": 6.584539835746337
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.903664424906049,
-        "y": 3.002925530791679
+        "x": 1.5187256434323766,
+        "y": 7.677697686435532
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.9036644249060484,
-        "y": 4.855379591994339
+        "x": 2.2130499816555194,
+        "y": 6.969350605367878
       },
       "prevControl": {
-        "x": 2.079160072809458,
-        "y": 4.075398934645851
-      },
-      "nextControl": {
-        "x": 1.7281687770026388,
-        "y": 5.635360249342827
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.9036644249060484,
-        "y": 3.002925530791679
-      },
-      "prevControl": {
-        "x": 1.8354161173880554,
-        "y": 3.344167068381644
+        "x": 1.2130499816555194,
+        "y": 6.969350605367878
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7,
-      "rotationDegrees": -28.059816121138134,
-      "rotateFast": true
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.0,
+      "waypointRelativePos": 0,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
             {
-              "type": "wait",
-              "data": {
-                "waitTime": 2.0
-              }
-            },
-            {
               "type": "named",
               "data": {
-                "name": "runShooter"
-              }
-            },
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 2.0
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "stopShooter"
+                "name": "zeroGyro"
               }
             }
           ]
@@ -97,7 +57,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -29.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

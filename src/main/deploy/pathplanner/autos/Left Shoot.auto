@@ -38,12 +38,6 @@
         {
           "type": "named",
           "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "stopIndexer"
           }
         },

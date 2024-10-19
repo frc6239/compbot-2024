@@ -124,6 +124,10 @@ public class RobotContainer
         () -> MathUtil.applyDeadband(-driverXbox.getLeftX(), OperatorConstants.LEFT_X_DEADBAND),
         () -> -driverXbox.getRawAxis(2));
 
+        ChassisSpeeds a = drivebase.getRobotVelocity();
+        System.out.println("vx speed" + a.vxMetersPerSecond);
+        System.out.println("vy speed" + a.vyMetersPerSecond);
+        System.out.println("omega speed" + a.omegaRadiansPerSecond);
   }
 
   private void setupDashboards() {
@@ -195,8 +199,8 @@ public class RobotContainer
     driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
     driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
     //driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
-    driverXbox.y().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
-    driverXbox.a().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
+    driverXbox.a().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
+    driverXbox.y().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
 
     
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
@@ -216,9 +220,10 @@ public class RobotContainer
 
   private void configurePathPlannerCommands() {
     NamedCommands.registerCommand("runShooter", Commands.runOnce(shooter::enable));
-    NamedCommands.registerCommand("stopShooter", Commands.runOnce(shooter::disable));
+   // NamedCommands.registerCommand("stopShooter", Commands.runOnce(shooter::disable));
     NamedCommands.registerCommand("runIndexer", Commands.runOnce(Indexer::run));
       NamedCommands.registerCommand("stopIndexer", Commands.runOnce(Indexer::stop));
+      NamedCommands.registerCommand("resetGyro", Commands.runOnce(drivebase::zeroGyro));
     NamedCommands.registerCommand("stopRobot", Commands.runOnce(() -> {
       drivebase.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
     }));

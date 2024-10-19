@@ -24,12 +24,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Left Path part 1"
@@ -45,12 +39,6 @@
           "type": "wait",
           "data": {
             "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopShooter"
           }
         },
         {
