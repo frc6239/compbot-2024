@@ -69,7 +69,7 @@
             {
               "type": "named",
               "data": {
-                "name": "runIndexer"
+                "name": "runShooter"
               }
             },
             {
@@ -81,7 +81,7 @@
             {
               "type": "named",
               "data": {
-                "name": "StopIndexer"
+                "name": "stopShooter"
               }
             }
           ]

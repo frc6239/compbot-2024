@@ -183,7 +183,7 @@ public class RobotContainer
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Drivetrain
-    //driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+    driverXbox.x().onTrue((Commands.runOnce(drivebase::zeroGyro)));
     //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
     //driverXbox.x().onTrue(new AutoDriveToTargetCommand(vision, drivebase));
     // driverXbox.b().whileTrue(
