@@ -25,7 +25,6 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    indexerMotor.set(0);
     enabled = false;
   }
 
