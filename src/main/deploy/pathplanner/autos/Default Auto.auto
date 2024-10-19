@@ -2,19 +2,49 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.9080518161036326,
-      "y": 5.4533183352081
+      "x": 1.3363329583802028,
+      "y": 5.52661562465982
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Default 1"
+            "name": "runShooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runIndexer"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopIndexer"
           }
         }
       ]

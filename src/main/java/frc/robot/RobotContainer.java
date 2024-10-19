@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -145,6 +146,7 @@ public class RobotContainer
     SmartDashboard.putData("Auto Command", m_chooser);
     
 
+    
     // Construct Shuffleboard
     // Put a widget to allow driver to select speed of shooter
     m_shooter_max_speed =
@@ -213,8 +215,10 @@ public class RobotContainer
   }
 
   private void configurePathPlannerCommands() {
-    NamedCommands.registerCommand("runShooter", Commands.runOnce(shooter::run));
-    NamedCommands.registerCommand("stopShooter", Commands.runOnce(shooter::stop));
+    NamedCommands.registerCommand("runShooter", Commands.runOnce(shooter::enable));
+    NamedCommands.registerCommand("stopShooter", Commands.runOnce(shooter::disable));
+    NamedCommands.registerCommand("runIndexer", Commands.runOnce(Indexer::run));
+      NamedCommands.registerCommand("stopIndexer", Commands.runOnce(Indexer::stop));
     NamedCommands.registerCommand("stopRobot", Commands.runOnce(() -> {
       drivebase.setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
     }));
