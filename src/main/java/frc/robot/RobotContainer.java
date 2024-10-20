@@ -196,8 +196,8 @@ public class RobotContainer
     //              ));
 
     // Shooter button bindings
-    driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
-    driverXbox.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
+    //driverXbox.rightBumper().onTrue(Commands.runOnce(shooter::run, shooter));
+    //.rightBumper().onFalse(Commands.runOnce(shooter::stop, shooter));
     //driverXbox.y().onTrue(Commands.runOnce(shooter::invert, shooter));
     driverXbox.a().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
     driverXbox.y().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
@@ -207,8 +207,8 @@ public class RobotContainer
 
     // Intake
     //driverXbox.b().toggleOnTrue(Commands.startEnd(intake::run, intake::stop, intake));
-    driverXbox.b().onTrue(Commands.runOnce(intake::run, intake));
-    driverXbox.b().onFalse(Commands.runOnce(intake::stop, intake));
+    driverXbox.rightBumper().onTrue(Commands.runOnce(intake::run, intake));
+    driverXbox.rightBumper().onFalse(Commands.runOnce(intake::stop, intake));
 
 
     // Indexer button bindings
