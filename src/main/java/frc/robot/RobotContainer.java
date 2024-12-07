@@ -204,6 +204,7 @@ public class RobotContainer
     driverXbox.a().onTrue(Commands.runOnce(shooter::decreaseSpeed, shooter));
     driverXbox.y().onTrue(Commands.runOnce(shooter::increaseSpeed, shooter));
 
+    driverXbox.b().toggleOnTrue(Commands.startEnd(shooter::enable, shooter::disable, intake));
     
     // driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
@@ -249,8 +250,11 @@ public class RobotContainer
    
     System.out.println("Auto Path selected: " + m_autopathselected);
 
+    System.out.println("Auto Path will be set to 'No Auto' for demo code");
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand(m_autopathselected);
+    
+    return drivebase.getAutonomousCommand("No Auto");
+    //return drivebase.getAutonomousCommand(m_autopathselected);
   }
 
   public void setDriveMode()

@@ -121,6 +121,7 @@ public class Robot extends TimedRobot
     }
 
     m_shooter.disable();
+    //m_intake.stop();
   }
 
   /**
@@ -166,7 +167,10 @@ public class Robot extends TimedRobot
     }
     m_robotContainer.setDriveMode();
     m_robotContainer.setMotorBrake(true);
-    m_shooter.enable();
+    
+    m_shooter.disable();
+    //m_intake.stop();
+    //m_shooter.enable();
     m_intake.run();
   }
 
